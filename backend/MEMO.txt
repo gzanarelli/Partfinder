@@ -1,0 +1,40 @@
+Routes: 
+
+- USER: 
+    /users/login
+    /users/signup
+    /users/login
+
+- PROFIL:
+    /profil/modify :
+    req.body.sport-add
+    req.body.sport-delete
+    req.body.availability-add
+    req.body.availability-delete
+
+
+- DB:
+	UserSchema = {
+		username: String,
+		password: String,
+		email: String,
+		online: Boolean,
+		sport: [AvailabilitySchema],
+		created: Date.now(),
+		modify: Date.now()
+	}
+
+	AvailabilitySchema = {
+		sport: String,
+		availability: [Date],
+		niveau: { type: mongoose.Schema.Types.ObjectId, ref: 'niveau' }
+		classement:{ type: mongoose.Schema.Types.ObjectId, ref: 'tennis' }
+	}
+
+	TennisSchema = {
+		classement: [String],
+	}
+
+	NiveauSchema = {
+		niveau: ["Novice", "Intermediaire", "Expert"]
+	}
