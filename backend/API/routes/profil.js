@@ -1,22 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../models/db');
 const userModel = require('../models/user');
-const CryptoJS = require('crypto-js');
-const { validProfil, validPassword, validSport } = require('./validator');
+const ValidProfil = require('../Utils/Validator/ValidProfil');
+const ValidSport = require('../Utils/Validator/ValidSport');
 const jwt = require('jsonwebtoken');
 
 
-// Permet de rajouter un sport avec une dispo.
+
+// Page profil
 
 router.post('/', (req, res) => {
-    var decoded = jwt.verify(req.body.token, 'SECRET_KEY');
+    var decoded = jwt.verify(req.body.token, process.env.SECRET_TOKEN);
     userModel.findById(decoded.user._id, (err, data) => {
         if (err) console.error(err);
         res.status(200).send({user: data});
     })
-})
-router.post('/sport-add', validSport, (req, res) => {
+});
+
+
+
+// Permet de rajouter un sport avec une dispo.
+
+router.post('/sport-add', ValidSport, (req, res) => {
 
     let sport = {
         sport: req.body.data.sport,
@@ -25,13 +30,14 @@ router.post('/sport-add', validSport, (req, res) => {
             start: req.body.data.start,
             stop: req.body.data.stop,
         }
-    }
-    let decoded = jwt.verify(req.body.token, 'SECRET_KEY');
+    };
+    let decoded = jwt.verify(req.body.token, process.env.SECRET_TOKEN);
 
     userModel.findById(decoded.user._id, (err, data) => {
 
         // Check si le sport est déja ajouté dans la DB.
         let add = true;
+      
         if (err) console.log(err);
         if (data.sport.length > 0) {
             for(let i = 0; i < data.sport.length; i++) {
@@ -51,7 +57,10 @@ router.post('/sport-add', validSport, (req, res) => {
     })
 });
 
+
+
 //Ajoute une dispo a un sport existant
+
 router.post('/availability-add', (req, res) => {
     // Recupere l'utilisateur en question
     userModel.findOne({ _id: req.session.user._id }, (err, data) => {
@@ -82,10 +91,15 @@ router.post('/availability-add', (req, res) => {
     })
 });
 
+
+
 // Delete une dispo sur un sport ciblé
+
 router.get('/availability-delete/:idSport/:idAvailability', (req, res) => {
+
     let idSport = req.params.idSport;
     let idAvailability = req.params.idAvailability;
+
     userModel.findById(req.session.user._id, (err, data) => {
         if (err) console.error(err);
         data.sport[idSport].availability.splice(idAvailability, 1);
@@ -95,19 +109,18 @@ router.get('/availability-delete/:idSport/:idAvailability', (req, res) => {
     })
 });
 
+
+
 // Delete un sport
+
 router.post('/delete-sport/:idSport', async (req, res) => {
-    let decoded = jwt.verify(req.body.token, 'SECRET_KEY');
-    console.log('delete routes');
+
+    let decoded = jwt.verify(req.body.token, process.env.SECRET_TOKEN);
     let idSport = req.params.idSport;
     let sportName = '';
-    await userModel.findById(decoded.user._id, (err, data) => {
-        sportName = data.sport[idSport].sport;
-        console.log(sportName);
-    });
-    // await userModel.findByIdAndUpdate(decoded.user._id, {$unset: {sport: {sport: sportName}}}, {useFindAndModify: false}, (err, data) =>{
-    //     console.log(data);
-    // })
+    
+    await userModel.findById(decoded.user._id, (err, data) => { sportName = data.sport[idSport].sport });
+    
     await userModel.findByIdAndUpdate(decoded.user._id, {$pull: {sport: {sport: sportName}}}, { multi: true, useFindAndModify: false, new: true}, (err, data) => {
         if (err) console.log(err);
         console.log(data);
@@ -115,7 +128,12 @@ router.post('/delete-sport/:idSport', async (req, res) => {
     })
 });
 
-router.post('/edit', validProfil, (req, res) => {
+
+
+// Edit le profil
+
+router.post('/edit', ValidProfil, (req, res) => {
+    
     let user = { modify: Date.now() };
     if (req.body.picture) user.picture = req.body.picture;
     if (req.body.username) user.username = req.body.username;
@@ -126,10 +144,8 @@ router.post('/edit', validProfil, (req, res) => {
     if (req.body.email) user.email = req.body.email;
     user = { $set: user };
 
-    var decoded = jwt.verify(req.body.token, 'SECRET_KEY');
+    var decoded = jwt.verify(req.body.token, process.env.SECRET_TOKEN);
 
-    // console.log(typeof req.body.zipcode);
-    // console.log(user);
     userModel.findOneAndUpdate({_id: decoded.user._id}, user, {upsert:true, new: true, useFindAndModify: true}, (err, data) => {
         if (err) console.log(err);
             console.log(data)
@@ -137,21 +153,21 @@ router.post('/edit', validProfil, (req, res) => {
     })
 });
 
-router.post('/edit/password', validPassword, (req, res) => {
-    userModel.findById(req.session.user._id, (err, data) => {
-        if (err) console.error(err);
-        let passDecrypt = CryptoJS.AES.decrypt(data.password.toString(), process.env.ENCRYPT).toString(CryptoJS.enc.Utf8);        
-        if (passDecrypt !== req.body.oldPassword)
-            res.status(400).send({ oldPassword: 'Old password not match' });
-        passDecrypt = null;
-        let newPassword = CryptoJS.AES.encrypt(`${req.body.password}`, process.env.ENCRYPT).toString();
-        userModel.updateMany({_id: req.session.user._id}, {$set: {password: newPassword, modify: Date.now()}}, (err, data) => {
-            if (err) console.error(err);
-            console.log(data);
-            res.status(200).send({ message: 'Password has been changed' });
-        })
-    })
-});
+// router.post('/edit/password', validPassword, (req, res) => {
+//     userModel.findById(req.session.user._id, (err, data) => {
+//         if (err) console.error(err);
+//         let passDecrypt = CryptoJS.AES.decrypt(data.password.toString(), process.env.ENCRYPT).toString(CryptoJS.enc.Utf8);        
+//         if (passDecrypt !== req.body.oldPassword)
+//             res.status(400).send({ oldPassword: 'Old password not match' });
+//         passDecrypt = null;
+//         let newPassword = CryptoJS.AES.encrypt(`${req.body.password}`, process.env.ENCRYPT).toString();
+//         userModel.updateMany({_id: req.session.user._id}, {$set: {password: newPassword, modify: Date.now()}}, (err, data) => {
+//             if (err) console.error(err);
+//             console.log(data);
+//             res.status(200).send({ message: 'Password has been changed' });
+//         })
+//     })
+// });
 
 
 module.exports = router;
