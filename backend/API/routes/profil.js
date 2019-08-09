@@ -50,7 +50,6 @@ router.post('/sport-add', ValidSport, (req, res) => {
         if (add === true) {
             userModel.findOneAndUpdate({_id: decoded.user._id}, {$push: {sport}}, {new: true}, (err, data) => {
                 if (err) console.log(err);
-                console.log(data);
                 res.status(200).send({ message: `Add ${sport.sport} with success`});
             })
         }
@@ -123,7 +122,6 @@ router.post('/delete-sport/:idSport', async (req, res) => {
     
     await userModel.findByIdAndUpdate(decoded.user._id, {$pull: {sport: {sport: sportName}}}, { multi: true, useFindAndModify: false, new: true}, (err, data) => {
         if (err) console.log(err);
-        console.log(data);
         res.status(200).send({ message: `${sportName} Has been delete` });
     })
 });
@@ -148,7 +146,6 @@ router.post('/edit', ValidProfil, (req, res) => {
 
     userModel.findOneAndUpdate({_id: decoded.user._id}, user, {upsert:true, new: true, useFindAndModify: true}, (err, data) => {
         if (err) console.log(err);
-            console.log(data)
         res.status(200).send({message: 'Profil has been modify successfully'});
     })
 });

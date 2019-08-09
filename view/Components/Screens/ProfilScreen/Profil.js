@@ -2,10 +2,10 @@ import React, { PureComponent } from 'react'
 import { Text, View, ScrollView, Dimensions, StyleSheet, Platform, Picker, Alert, RefreshControl, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
 import { Avatar } from 'react-native-elements';
-import ipAddress from '../../config';
+import ipAddress from '../../../config';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
-import DatePicker from '../DatePicker';
+import DatePicker from '../../DatePicker';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Modal from 'react-native-modalbox';
 
@@ -180,7 +180,7 @@ class Profil extends PureComponent {
                                 <Avatar
                                     size="xlarge"
                                     rounded
-                                    source={require('../../img/profil.jpg')}
+                                    source={require('../../../img/profil.jpg')}
                                 />
                                 <Text style={{ marginTop: 10, fontSize: 24, fontWeight: 'bold', textAlign: 'center'}} >
                                     {this.state.userProfil.username} 

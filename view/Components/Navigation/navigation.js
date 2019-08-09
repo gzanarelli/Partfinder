@@ -4,14 +4,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Avatar, Badge, withBadge } from 'react-native-elements';
 import Signin from '../Screens/signin';
 import Signup from '../Screens/signup';
-import Home from '../Screens/home';
-import Accueil from '../Screens/accueil';
-import Profil from '../Screens/profil';
+import Home from '../Screens/HomeScreen/Home';
+import Accueil from '../Screens/AccueilScreen/Accueil';
+import Profil from '../Screens/ProfilScreen/Profil';
 import Search from '../Screens/search';
 import Message from '../Screens/message';
 import Statistic from '../Screens/statistic';
 import EditProfil from'../Screens/EditProfil';
-import { createAppContainer, createMaterialTopTabNavigator, createSwitchNavigator, createStackNavigator, HeaderBackButton } from 'react-navigation';
+import { createAppContainer, createMaterialTopTabNavigator, createSwitchNavigator, createStackNavigator } from 'react-navigation';
 const BadgedIcon = withBadge(1)(Icon);
 
 

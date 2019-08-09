@@ -4,10 +4,9 @@ const userModel = require('../models/user');
 const jwt = require('jsonwebtoken');
 
 router.post('/', (req, res) => {
-    // console.log('search: ', req.session.user._id);
+
     // Search les utilisateurs ayant les memes dispos sur le meme sport, mais ne sort pas l'utilisateur courant.
     userModel.findById(req.session.user._id, (err, data) => {
-        console.log(data.sport[0].sport);
         userModel.find({ 
             _id: { $ne: req.session.user._id },
             sport: {
@@ -23,7 +22,6 @@ router.post('/', (req, res) => {
                 }
             }
         }, (err, data) => {
-                console.log(data);
                 res.status(200).send({ users: data });
         })
     })
@@ -34,7 +32,6 @@ router.post('/home', (req, res) => {
  
     // Search les utilisateurs ayant les memes dispos sur le meme sport, mais ne sort pas l'utilisateur courant.
     userModel.findById(decoded.user._id, (err, data) => {
-        console.log('Data Sport: ', data.sport);
         if ( data.sport.length > 0) {
             userModel.find({ 
                 _id: { $ne: decoded.user._id },
@@ -51,7 +48,6 @@ router.post('/home', (req, res) => {
                     }
                 }
             }, (err, data) => {
-                console.log(data);
                 res.status(200).send({ users: data });
             })
         }

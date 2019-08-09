@@ -20,7 +20,6 @@ router.post('/signup', ValidSignup, (req, res) => {
             }).save(function(err, data) {
                 if (err) console.error(err);
                 else { 
-                    // req.session.user = data;
                     jwt.sign({user: data}, process.env.SECRET_TOKEN, (err, token) => {
                         if (err) console.error(err);
                         res.status(200).send({message: 'Login successfully', result: true, token: token});
@@ -37,12 +36,10 @@ router.post('/signup', ValidSignup, (req, res) => {
 router.post('/login', ValidLogin, (req, res) => {
     userModel.findOne({ email: req.body.email.toLowerCase() }, (err, data) => {
         if (err) console.log(err);
-        // console.log(data);
         if (!data) res.status(400).send({error: 'Account not found', result: false});
         else {
             let passDecrypt = CryptoJS.AES.decrypt(data.password.toString(), process.env.ENCRYPT).toString(CryptoJS.enc.Utf8);
             if (req.body.password === passDecrypt) {
-                // req.session.user = data;
                 jwt.sign({user: data}, process.env.SECRET_TOKEN, (err, token) => {
                     if (err) console.error(err);
                     res.status(200).send({message: 'Login successfully', result: true, token: token});
