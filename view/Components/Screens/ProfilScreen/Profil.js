@@ -5,11 +5,13 @@ import { Avatar } from 'react-native-elements';
 import ipAddress from '../../../config';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
-import DatePicker from '../../DatePicker';
+import DatePicker from './DatePicker';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Modal from 'react-native-modalbox';
 import Sport from './Sport';
 import Styles from './StyleProfil';
+import Infos from './Infos';
+import StatisticProfil from './StatisticProfil';
 
 // Mettre en place des variables pour les couleurs principales.
 // Check une lib d'icones pour les sports
@@ -24,12 +26,11 @@ class Profil extends Component {
             user: 'Sport',
             refreshing: false,
             message: '',
-            deleteId: null
+            deleteId: null,
         }
     }
 
     async componentDidMount () {
-        console.log('enter fucntion');
         await fetch(`http://${ipAddress}:3000/profil`, {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -37,7 +38,7 @@ class Profil extends Component {
         })
         .then(res => res.json())
         .then(data => {
-            this.setState({userProfil: data.user, sportList: data.user.sport});
+            this.setState({userProfil: data.user, sportList: data.user.sport });
         })
     }
 
@@ -59,10 +60,6 @@ class Profil extends Component {
             this.setState({ userProfil: data.user, sportList: data.user.sport, message: '' });
         });
     }
-
-    // addSport = (message) => {
-    //     this.refs.addSport.show(message, 5000);
-    // }
 
     // Suppression d'un sport
     deleteSport = async () => {
@@ -126,47 +123,14 @@ class Profil extends Component {
                         textStyle={{color:'white', textAlign: 'center'}}
                     />
                         <View style={{backgroundColor: '#4790ED'}}>
-                            <View style={{display: 'flex', flexDirection: 'column', height: height * 0.35, alignItems: 'center', justifyContent: 'center', borderBottomLeftRadius: 90, backgroundColor: '#fff'}}>
-                                <Avatar
-                                    size="xlarge"
-                                    rounded
-                                    source={require('../../../img/profil.jpg')}
-                                />
-                                <Text style={{ marginTop: 10, fontSize: 24, fontWeight: 'bold', textAlign: 'center'}} >
-                                    {this.state.userProfil.username} 
-                                    <Icons reverse name={'account-edit'} size={24} style={{color: '#4790ED'}}
-                                        onPress={ () => {
-                                            this.props.navigation.navigate('EditProfil')
-                                        }} 
-                                    /> 
-                                </Text>
-                                <Text style={{ fontSize: 14, textAlign: 'center'}} >
-                                    {
-                                        this.state.userProfil.city ?
-                                        this.state.userProfil.city + ', ' + 
-                                        (this.state.userProfil.zipcode ? this.state.userProfil.zipcode : '') : 
-                                        'Pays merveilleux, 90909'
-                                    }
-                                </Text>
-                            </View>
-
+                            <Infos
+                                userProfilFromParent={ this.state.userProfil }
+                                editProfil={ () => this.props.navigation.navigate('EditProfil') }
+                            />
                         </View>
                         
                         <View style={Styles.bloc2}>
-                                <View>
-                                    <Text style={Styles.textNumber}>156</Text>
-                                    <Text style={Styles.text}>FRIENDS</Text>
-                                </View>
-                                <Text style={Styles.pipe}> | </Text>
-                                <View>
-                                    <Text style={Styles.textNumber}>{this.sportListLength()}</Text>
-                                    <Text style={Styles.text}>SPORTS</Text>
-                                </View>
-                                <Text style={Styles.pipe}> | </Text>
-                                <View>
-                                    <Text style={Styles.textNumber}>1537</Text>
-                                    <Text style={Styles.text}>LIKES</Text>
-                                </View>                        
+                            <StatisticProfil lengthList={this.sportListLength()} />
                         </View>
                         
                         <View style={{ display: 'flex', flexDirection: 'column', width: width, borderBottomLeftRadius: 90, color: '#fff'}}>

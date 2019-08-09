@@ -21,20 +21,4 @@ export default StyleSheet.create({
         backgroundColor: '#4790ED',
         paddingHorizontal: 70
     },
-    textNumber: {
-        color: '#fff',
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center'
-    },
-    text: {
-        color: '#fff',
-        fontSize: 11,
-        textAlign: 'center'
-    },
-    pipe: {
-        color: 'rgba(0,0,0, .1)',
-        fontSize: 40,
-        fontWeight: '100'
-    },
 })

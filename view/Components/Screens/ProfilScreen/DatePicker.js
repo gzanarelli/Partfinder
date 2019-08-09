@@ -4,9 +4,10 @@ import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modalbox';
 import { connect } from 'react-redux';
-import ipAddress from '../config';
-import Toast, {DURATION} from 'react-native-easy-toast';
+import ipAddress from '../../../config';
+import Toasts from './Toaster';
 const { width, height } = Dimensions.get('screen');
+
 
 class DatePicker extends PureComponent {
     constructor(props) {
@@ -129,7 +130,9 @@ class DatePicker extends PureComponent {
     render() {
         return (
             <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                <Toast
+
+                <Toasts />
+                {/* <Toast
                     ref="errorsSport"
                     style={{backgroundColor: 'red' , width: width * 0.6}}
                     position='top'
@@ -158,7 +161,7 @@ class DatePicker extends PureComponent {
                         fadeOutDuration={1000}
                         opacity={0.8}
                         textStyle={{color:'white', textAlign: 'center'}}
-                />
+                /> */}
                 <Icons name={'plus-circle-outline'} size={50} color={'#fff'} onPress={ () => {this.refs.modal1.open(); this.setState({errors: {}})} } />
                 
                 {/* {this.state.errors && (

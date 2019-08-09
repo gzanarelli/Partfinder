@@ -3,7 +3,7 @@ import { Text, View, ScrollView, Dimensions, StyleSheet, Platform, Picker, Alert
 import { connect } from 'react-redux';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
-import DatePicker from '../../DatePicker';
+import DatePicker from './DatePicker';
 import Styles from './StylesSport';
 const {width, height} = Dimensions.get('screen');
 
