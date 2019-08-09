@@ -8,7 +8,7 @@ import ipAddress from '../config';
 import Toast, {DURATION} from 'react-native-easy-toast';
 const { width, height } = Dimensions.get('screen');
 
-export class DatePicker extends PureComponent {
+class DatePicker extends PureComponent {
     constructor(props) {
         super(props);
         this.state =({
@@ -100,7 +100,7 @@ export class DatePicker extends PureComponent {
             stop: (this.state.stopH ? this.state.stopH : '00') + ':' + (this.state.stopM ? this.state.stopM : '00') ,
         }
 
-        console.log(data);
+        // console.log(data);
         await fetch(`http://${ipAddress}:3000/profil/sport-add`, {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -118,11 +118,12 @@ export class DatePicker extends PureComponent {
             else {
                 this.setState({ message: data.message });
                 // Execute le toaster dans le parent Profil lors de l'ajout d'un sport
-                this.props.addSport.addSport(this.state.message);
+                this.refs.addSport.show(this.state.message);
             }
         });
         // Execute la function _onRefresh dans le parent Profil
-        this.props.refresh._onRefresh();
+        this.props._onRefresh();
+        // console.log('existe t il', this.props.thisSport.thisProfil);
     }
 
     render() {
@@ -147,6 +148,16 @@ export class DatePicker extends PureComponent {
                     fadeOutDuration={1000}
                     opacity={0.8}
                     textStyle={{color:'white'}}
+                />
+                <Toast
+                        ref="addSport"
+                        style={{backgroundColor:'green', width: width * 0.6}}
+                        position='top'
+                        positionValue={10}
+                        fadeInDuration={750}
+                        fadeOutDuration={1000}
+                        opacity={0.8}
+                        textStyle={{color:'white', textAlign: 'center'}}
                 />
                 <Icons name={'plus-circle-outline'} size={50} color={'#fff'} onPress={ () => {this.refs.modal1.open(); this.setState({errors: {}})} } />
                 

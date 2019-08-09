@@ -38,10 +38,6 @@ class Signin extends Component {
         }
     }
 
-    componentDidMount() {
-        this.props.view();
-    }
-
     render() {
 
         const showPassword = () => {
@@ -132,12 +128,6 @@ function mapDispatchToProps(dispatch) {
             dispatch({
                 type: 'addToken',
                 token: token
-            })
-        }, 
-        view: function() {
-            dispatch({
-                type: 'areaView',
-                page: true
             })
         }
     }

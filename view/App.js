@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-navigation';
 import userToken from './Components/Reducer/token.reducer';
 import {Provider} from 'react-redux';
 import {createStore, combineReducers}  from 'redux';
-const store = createStore(combineReducers({userToken}));
+const store = createStore(combineReducers({ userToken }));
 
 export default class App extends Component {
   render() {
