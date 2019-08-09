@@ -10,6 +10,7 @@ const isEmpty = (data) => {
 };
 
 
+// Validator Sign UP
 const validSignup = (req, res, next) => {
     let errors = {};
     let regexPwd = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/;
@@ -36,6 +37,8 @@ const validSignup = (req, res, next) => {
     else next();
 };
 
+
+// Validator Sign In
 const validLogin = (req, res, next) => {
     let errors = {};
     
@@ -48,6 +51,8 @@ const validLogin = (req, res, next) => {
     else next();
 };
 
+
+// Validator Edit Profil
 const validProfil = (req, res, next) => {
     let errors = {};
     console.log('type email', typeof req.body.email)
@@ -59,6 +64,8 @@ const validProfil = (req, res, next) => {
     else next();
 };
 
+
+// Validator Password
 const validPassword = (req, res, next) => {
     let errors = {};
     let regexPwd = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/;
@@ -75,4 +82,30 @@ const validPassword = (req, res, next) => {
     else next();
 };
 
-module.exports = { validSignup, validLogin, validProfil, validPassword };
+
+// Validator Add Sports
+const validSport = (req, res, next) => {
+    let data = {
+        sport: req.body.data.sport,
+        day: req.body.data.day,
+        start: req.body.data.start,
+        stop: req.body.data.stop,
+    }
+    let errors = {};
+
+    if (data.sport === '')
+        errors.sport = 'sport must be select';
+    if (data.day === '')
+        errors.day = 'day must be select';
+    if (data.start === '')
+        errors.start = 'start must be select';
+    if (data.stop === '')
+        errors.stop = 'stop must be select';
+    console.log('On est la pour voir data.sport: ', errors);
+    if (Object.keys(errors).length > 0)
+        res.status(500).send({ errors })
+    else
+        next();
+}
+
+module.exports = { validSignup, validLogin, validProfil, validPassword, validSport };

@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../models/db');
 const userModel = require('../models/user');
 const CryptoJS = require('crypto-js');
-const { validProfil, validPassword } = require('./validator');
+const { validProfil, validPassword, validSport } = require('./validator');
 const jwt = require('jsonwebtoken');
 
 
@@ -11,37 +11,38 @@ const jwt = require('jsonwebtoken');
 
 router.post('/', (req, res) => {
     var decoded = jwt.verify(req.body.token, 'SECRET_KEY');
-    console.log(decoded);
     userModel.findById(decoded.user._id, (err, data) => {
         if (err) console.error(err);
-        console.log(data);
         res.status(200).send({user: data});
     })
 })
-router.post('/sport-add',  (req, res) => {
+router.post('/sport-add', validSport, (req, res) => {
+
     let sport = {
-        sport: req.body.sport,
+        sport: req.body.data.sport,
         availability: {
-            day: req.body.availability.day,
-            start: req.body.availability.start,
-            stop: req.body.availability.stop,
+            day: req.body.data.day,
+            start: req.body.data.start,
+            stop: req.body.data.stop,
         }
     }
-    userModel.findById({_id: req.session.user._id}, (err, data) => {
+    let decoded = jwt.verify(req.body.token, 'SECRET_KEY');
+
+    userModel.findById(decoded.user._id, (err, data) => {
 
         // Check si le sport est déja ajouté dans la DB.
         let add = true;
         if (err) console.log(err);
         if (data.sport.length > 0) {
             for(let i = 0; i < data.sport.length; i++) {
-                if (data.sport[i].sport === sport.sport) {
+                if (data.sport[i].sport.toLowerCase() === sport.sport.toLowerCase()) {
                     add = false;
-                    res.status(400).send({ message: `You already add ${sport.sport}`});
+                    res.status(400).send({ 'errors.message': `You already add ${sport.sport}`});
                 }
             }
         }
         if (add === true) {
-            userModel.findOneAndUpdate({_id: req.session.user._id}, {$push: {sport}}, {new: true}, (err, data) => {
+            userModel.findOneAndUpdate({_id: decoded.user._id}, {$push: {sport}}, {new: true}, (err, data) => {
                 if (err) console.log(err);
                 console.log(data);
                 res.status(200).send({ message: `Add ${sport.sport} with success`});
@@ -95,11 +96,22 @@ router.get('/availability-delete/:idSport/:idAvailability', (req, res) => {
 });
 
 // Delete un sport
-router.get('/delete-sport/:idSport', (req, res) => {
+router.post('/delete-sport/:idSport', async (req, res) => {
+    let decoded = jwt.verify(req.body.token, 'SECRET_KEY');
+    console.log('delete routes');
     let idSport = req.params.idSport;
-    userModel.findById(req.session.user._id, (err, data) => {
-        data.sport.splice(idSport, 1);
-        res.status(200).send({ message: `Has been delete` });
+    let sportName = '';
+    await userModel.findById(decoded.user._id, (err, data) => {
+        sportName = data.sport[idSport].sport;
+        console.log(sportName);
+    });
+    // await userModel.findByIdAndUpdate(decoded.user._id, {$unset: {sport: {sport: sportName}}}, {useFindAndModify: false}, (err, data) =>{
+    //     console.log(data);
+    // })
+    await userModel.findByIdAndUpdate(decoded.user._id, {$pull: {sport: {sport: sportName}}}, { multi: true, useFindAndModify: false, new: true}, (err, data) => {
+        if (err) console.log(err);
+        console.log(data);
+        res.status(200).send({ message: `${sportName} Has been delete` });
     })
 });
 
