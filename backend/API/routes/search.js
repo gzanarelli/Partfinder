@@ -33,6 +33,12 @@ router.post('/home', (req, res) => {
     // Search les utilisateurs ayant les memes dispos sur le meme sport, mais ne sort pas l'utilisateur courant.
     userModel.findById(decoded.user._id, (err, data) => {
         if ( data.sport.length > 0) {
+            // let sportList = []
+            // for(let i = 0; i < data.sport.length; i++) {
+            //     sportList[i] = data.sport[i].sport;
+            // }
+            // console.log('Liste des sport: ', sportList);
+
             userModel.find({ 
                 _id: { $ne: decoded.user._id },
                 sport: {
@@ -41,13 +47,14 @@ router.post('/home', (req, res) => {
                         availability: {
                             $elemMatch: {
                                 day: data.sport[0].availability[0].day,
-                                start: { $lte: data.sport[0].availability[0].stop },
+                                // start: { $lte: data.sport[0].availability[0].stop },
                                 stop: { $gte: data.sport[0].availability[0].start }
                             }
                         }
                     }
                 }
             }, (err, data) => {
+                console.log('Les partners found: ', data);
                 res.status(200).send({ users: data });
             })
         }

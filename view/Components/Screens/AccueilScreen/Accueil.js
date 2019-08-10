@@ -49,6 +49,13 @@ class Accueil extends PureComponent {
       return (data[0].toUpperCase() + data.slice(1).toLowerCase());
     };
 
+    const toDate = (data) => {
+      if (data.length === 3)
+          return data[0] + ':' + data.slice(1) + 'H';
+      else
+          return data[0] + data[1] + ':' + data.slice(2) + 'H';
+  }
+
     // List les personnes compatible avec le profil connecté
     if (this.state.users) {
       var usersList = this.state.users.map((user, i) => {
@@ -63,7 +70,7 @@ class Accueil extends PureComponent {
               <Avatar
                 size="large"
                 rounded
-                title={!user.picture && user.username[0].toUpperCase()}
+                title={user.username[0].toUpperCase()}
                 titleStyle={{color: '#4790ED', opacity: 0.8}}
                 source={user.picture && require('../../../img/profil.jpg')}
                 overlayContainerStyle={ Styles.avatarContainer }
@@ -76,21 +83,21 @@ class Accueil extends PureComponent {
               <View style={Styles.viewInfos}>
                 <View style={Styles.subtitle}>
                   <View style={Styles.viewIcon}>
-                    { 
+                    {/* { 
                       user.sport[0].sport === 'tennis' || user.sport[0].sport === 'table-tennis' ? 
                       <Icons name={`${user.sport[0].sport}`} size={16} /> : 
                       <Icon name={Platform.os === 'ios' ? `ios-${user.sport[0].sport}` : `md-${user.sport[0].sport}`} size={16} />
-                    }
+                    } */}
                     <Text style={{ color: i % 2 === 0 ?'grey' : '#fff', fontSize: 16}}>
                       {' ' + toUpp(user.sport[0].sport)}
                     </Text>
                   </View>
                   <Text style={{ color: i % 2 === 0 ?'grey' : '#fff',fontSize: 16,}}>
-                    {toUpp(user.sport[0].availability[0].day)+ ' ' + user.sport[0].availability[0].start + 'H à ' + user.sport[0].availability[0].stop + 'H'}
+                    {toUpp(user.sport[0].availability[0].day)+ ' => ' + toDate(user.sport[0].availability[0].start.toString()) + ' - ' + toDate(user.sport[0].availability[0].stop.toString())}
                   </Text>
                 </View>
                 <View style={{right: 15}}>
-                  <Icon onPress={() => console.log('Add Profil Page')} name={Platform.os === 'ios' ? 'ios-arrow-round-forward' : 'md-arrow-round-forward'} size={25} color={ i % 2 === 0 ? '#000' : '#fff'} />
+                  <Icon onPress={() => this.props.navigation.navigate('PartnerProfil')} name={Platform.os === 'ios' ? 'ios-arrow-round-forward' : 'md-arrow-round-forward'} size={25} color={ i % 2 === 0 ? '#000' : '#fff'} />
                 </View>
               </View>
             }

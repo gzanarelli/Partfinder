@@ -22,6 +22,13 @@ export default class Sport extends Component {
             return (data[0].toUpperCase() + data.slice(1).toLowerCase());
         };
 
+        const toDate = (data) => {
+            if (data.length === 3)
+                return data[0] + ':' + data.slice(1) + 'H';
+            else
+                return data[0] + data[1] + ':' + data.slice(2) + 'H';
+        }
+
         // Selection de la biblioteque d'Icon pour Sports
         const selectIcon = (sport) => {
             switch (sport){
@@ -41,11 +48,13 @@ export default class Sport extends Component {
 
             // Rajout des dispos de chacuns des sports
             let avaiList = sport.availability.map((avai, i) => {
+                let start = avai.start.toString();
+                let stop = avai.stop.toString();
                 return (
                     <View key={i} style={Styles.availabilityView} >
-                        <Text style={Styles.availabilitytext}>{toUpp(avai.day) + ': '}</Text>
-                        <Text style={Styles.availabilitytext}>{toUpp(avai.start) + 'H '}</Text>
-                        <Text style={Styles.availabilitytext}>{toUpp(avai.stop) + 'H'}</Text>                    
+                        <Text style={Styles.availabilitytext}>{toUpp(avai.day) + ' => '}</Text>
+                        <Text style={Styles.availabilitytext}>{toDate(start) + ' - '}</Text>
+                        <Text style={Styles.availabilitytext}>{toDate(stop)}</Text>                    
                     </View>
                 )
             })

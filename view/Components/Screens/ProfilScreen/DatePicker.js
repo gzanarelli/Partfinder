@@ -70,8 +70,8 @@ class DatePicker extends PureComponent {
         let data = {
             sport: this.state.sport,
             day: this.state.day,
-            start: (this.state.startH ? this.state.startH : '00') + ':' + (this.state.startM ? this.state.startM : '00') ,
-            stop: (this.state.stopH ? this.state.stopH : '00') + ':' + (this.state.stopM ? this.state.stopM : '00') ,
+            start: parseInt((this.state.startH ? this.state.startH : '00')  + (this.state.startM ? this.state.startM : '00')) ,
+            stop: parseInt((this.state.stopH ? this.state.stopH : '00') + (this.state.stopM ? this.state.stopM : '00')) ,
         }
 
         // console.log(data);

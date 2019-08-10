@@ -3,8 +3,8 @@ let Schema = mongoose.Schema;
 
 let timeSchema = new Schema({
     day: String,
-    start: String,
-    stop: String
+    start: Number,
+    stop: Number
 });
 
 let availabilitySchema = new Schema({

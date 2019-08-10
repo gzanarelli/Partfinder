@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-import { Platform, View, TouchableOpacity, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { Avatar, Badge, withBadge } from 'react-native-elements';
+import React from 'react';
+import { View } from 'react-native';
+import { Avatar, Badge } from 'react-native-elements';
 import Signin from '../Screens/SigninScreen/signin';
 import Signup from '../Screens/SignupScreen/signup';
 import Home from '../Screens/HomeScreen/Home';
@@ -10,9 +9,9 @@ import Profil from '../Screens/ProfilScreen/Profil';
 import Search from '../Screens/search';
 import Message from '../Screens/message';
 import Statistic from '../Screens/statistic';
-import EditProfil from'../Screens/EditProfil';
+import EditProfil from'../Screens/EditProfilScreen/EditProfil';
+import PartnerProfil from '../Screens/PartnerProfilScreen/PartnerProfil';
 import { createAppContainer, createMaterialTopTabNavigator, createSwitchNavigator, createStackNavigator } from 'react-navigation';
-const BadgedIcon = withBadge(1)(Icon);
 
 
 // Stack Profil & Edit Profil
@@ -31,6 +30,24 @@ const ProfilContainer = createStackNavigator({
     }
   }
 });
+
+
+// Stack Accueil & Profil Partner
+const AccueilContainer = createStackNavigator({
+  Accueil: {
+    screen: Accueil,
+    navigationOptions: {
+      header: null,
+      headerBackTitle: 'Accueil',
+    },
+  },
+  PartnerProfil: {
+    screen: PartnerProfil,
+    navigationOptions: {
+      title: 'Profil Partner'
+    }
+  }
+})
 
 
 // Top Bar Profil, Accueil, Search, Message & Statistic
@@ -59,9 +76,10 @@ const TopContainer = createMaterialTopTabNavigator({
       )
     },
   },
-  Accueil: {
-    screen: Accueil,
+  AccueilContainer: {
+    screen: AccueilContainer,
     navigationOptions: {
+      title: 'ACCUEIL',
       tabBarIcon: ({tintColor}) => (
         <Avatar 
           rounded
