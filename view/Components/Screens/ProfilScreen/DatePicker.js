@@ -5,7 +5,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modalbox';
 import { connect } from 'react-redux';
 import ipAddress from '../../../config';
-import Toasts from './Toaster';
+import Toast, {DURATION} from 'react-native-easy-toast';
+import Sport from '../../../utils/sportList';
+import Day from '../../../utils/dayList';
 const { width, height } = Dimensions.get('screen');
 
 
@@ -27,26 +29,8 @@ class DatePicker extends PureComponent {
 
     renderList() {
         var list = [];
-        let sport = [
-            '',
-            'Tennis',
-            'Football',
-            'Badminton',
-            'Sqaush',
-            'Table-tennis',
-            'Basket',
-            'Rugby',
-            'Handball',
-            'Taekwondo',
-            'Judo',
-            'Danse',
-            'Calisthenics',
-            'Cross-fit',
-            'Fitness'
-        ].sort();
-    
-        for (var i=0;i<sport.length;i++) {
-          list.push(<Picker.Item label={sport[i]} value={sport[i]} color={'#fff'} key={i} />);
+        for (var i=0;i<Sport.length;i++) {
+          list.push(<Picker.Item label={Sport[i]} value={Sport[i]} color={'#fff'} key={i} />);
         }
         return list
     }
@@ -54,19 +38,8 @@ class DatePicker extends PureComponent {
 
     renderListDay() {
         var list = [];
-        let dayList= [
-            '',
-            'Mon',
-            'Tue',
-            'Wed',
-            'Thu',
-            'Fri',
-            'Sat',
-            'Sun'
-        ];
-
-        for (var i=0;i<dayList.length;i++) {
-          list.push(<Picker.Item color={'#fff'} label={dayList[i]} value={dayList[i]} key={i} />);
+        for (var i=0;i<Day.length;i++) {
+          list.push(<Picker.Item color={'#fff'} label={Day[i]} value={Day[i]} key={i} />);
         }
     
         return list;
@@ -109,11 +82,13 @@ class DatePicker extends PureComponent {
         })
         .then(res => res.json())
         .then(data => {
+            console.log(data);
             if (data.errors) {
                 this.setState({ errors: data.errors });
                 console.log(this.state.errors.sport);
-                this.refs.errorsSport.show(this.state.errors.sport, 5000);
-                this.refs.errorsDay.show(this.state.errors.day, 5000);
+                this.state.errors.day ? this.refs.errors.show(this.state.errors.day, 5000) : '' ;
+                this.state.errors.sport ? this.refs.errors.show(this.state.errors.sport, 5000) : '' ;
+                this.state.errors.message ? this.refs.errors.show(this.state.errors.message, 5000) : '';
             }
 
             else {
@@ -131,26 +106,15 @@ class DatePicker extends PureComponent {
         return (
             <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
 
-                <Toasts />
-                {/* <Toast
-                    ref="errorsSport"
-                    style={{backgroundColor: 'red' , width: width * 0.6}}
-                    position='top'
-                    positionValue={10}
-                    fadeInDuration={750}
-                    fadeOutDuration={1000}
-                    opacity={0.8}
-                    textStyle={{color:'white'}}
-                />
                 <Toast
-                    ref="errorsDay"
+                    ref="errors"
                     style={{backgroundColor: 'red' , width: width * 0.6}}
                     position='top'
                     positionValue={10}
                     fadeInDuration={750}
                     fadeOutDuration={1000}
                     opacity={0.8}
-                    textStyle={{color:'white'}}
+                    textStyle={{color:'white', textAlign: 'center'}}
                 />
                 <Toast
                         ref="addSport"
@@ -161,16 +125,9 @@ class DatePicker extends PureComponent {
                         fadeOutDuration={1000}
                         opacity={0.8}
                         textStyle={{color:'white', textAlign: 'center'}}
-                /> */}
+                />
                 <Icons name={'plus-circle-outline'} size={50} color={'#fff'} onPress={ () => {this.refs.modal1.open(); this.setState({errors: {}})} } />
-                
-                {/* {this.state.errors && (
-                    <View >
-                        <Text style={{textAlign: 'center', color: 'red', padding: 5}} > {this.state.errors.sport} </Text>
-                        <Text style={{textAlign: 'center', color: 'red', padding: 5}} > {this.state.errors.day} </Text>
-                    </View>
-                )}      */}
-                
+
                 <Modal style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#241332', padding: 3, display: 'flex', flexDirection: 'row' }} position={"top"} ref={"modal1"} swipeArea={20}>
                     <View style={{display: 'flex', flexDirection: 'column', width:'50%'}}>
                         <View style={{ marginTop: 10, display: 'flex', flexDirection: 'row', width: '100%', borderBottomColor: 'grey', opacity: 0.3, borderBottomWidth: 0.5 }}>

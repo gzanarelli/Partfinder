@@ -43,7 +43,7 @@ router.post('/sport-add', ValidSport, (req, res) => {
             for(let i = 0; i < data.sport.length; i++) {
                 if (data.sport[i].sport.toLowerCase() === sport.sport.toLowerCase()) {
                     add = false;
-                    res.status(400).send({ 'errors.message': `You already add ${sport.sport}`});
+                    res.status(400).send({ errors: { message: `You already add ${sport.sport}` }});
                 }
             }
         }

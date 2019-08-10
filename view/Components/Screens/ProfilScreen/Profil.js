@@ -9,7 +9,7 @@ import DatePicker from './DatePicker';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Modal from 'react-native-modalbox';
 import Sport from './Sport';
-import Styles from './StyleProfil';
+import Styles from './Styles/StyleProfil';
 import Infos from './Infos';
 import StatisticProfil from './StatisticProfil';
 
@@ -126,6 +126,7 @@ class Profil extends Component {
                             <Infos
                                 userProfilFromParent={ this.state.userProfil }
                                 editProfil={ () => this.props.navigation.navigate('EditProfil') }
+                                deconnexion={ () => this.props.navigation.navigate('Home') }
                             />
                         </View>
                         

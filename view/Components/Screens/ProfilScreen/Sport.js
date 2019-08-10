@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DatePicker from './DatePicker';
-import Styles from './StylesSport';
+import Styles from './Styles/StylesSport';
 const {width, height} = Dimensions.get('screen');
 
 export default class Sport extends Component {

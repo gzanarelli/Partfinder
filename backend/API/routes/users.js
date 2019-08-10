@@ -19,13 +19,8 @@ router.post('/signup', ValidSignup, (req, res) => {
                 password: CryptoJS.AES.encrypt(`${req.body.password}`, process.env.ENCRYPT).toString()
             }).save(function(err, data) {
                 if (err) console.error(err);
-                else { 
-                    jwt.sign({user: data}, process.env.SECRET_TOKEN, (err, token) => {
-                        if (err) console.error(err);
-                        res.status(200).send({message: 'Login successfully', result: true, token: token});
-                    })             
+                else
                     res.status(200).send({message: `Account was created successfully`, result: true});
-                }
             });
         }
     });
@@ -50,12 +45,5 @@ router.post('/login', ValidLogin, (req, res) => {
         }
     });
 });
-
-
-/* GET Déconnexion du compte en cours */
-
-// router.get('/logout', (req, res) => {
-//     console.log('logged out');
-// });
 
 module.exports = router;

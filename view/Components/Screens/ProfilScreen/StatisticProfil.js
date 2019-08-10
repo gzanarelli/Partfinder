@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Text, View } from 'react-native';
-import Styles from './StylesStatProfil';
+import Styles from './Styles/StylesStatProfil';
 
 class StatisticProfil extends PureComponent {
     constructor(props) {
