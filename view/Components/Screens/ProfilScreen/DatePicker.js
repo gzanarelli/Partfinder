@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react'
-import { Text, View, Alert, ScrollView, Dimensions, TouchableHighlight, Button, Picker } from 'react-native';
+import { Text, View, Dimensions, Picker, Platform } from 'react-native';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modalbox';
 import { connect } from 'react-redux';
 import ipAddress from '../../../config';
-import Toast, {DURATION} from 'react-native-easy-toast';
+import Toast from 'react-native-easy-toast';
 import Sport from '../../../utils/sportList';
 import Day from '../../../utils/dayList';
+import Styles from './Styles/StylesDatePicker';
 const { width, height } = Dimensions.get('screen');
 
 
@@ -30,7 +31,7 @@ class DatePicker extends PureComponent {
     renderList() {
         var list = [];
         for (var i=0;i<Sport.length;i++) {
-          list.push(<Picker.Item label={Sport[i]} value={Sport[i]} color={'#fff'} key={i} />);
+          list.push(<Picker.Item label={Sport[i]} value={Sport[i]} color={Styles.pickerItem} key={i} />);
         }
         return list
     }
@@ -39,7 +40,7 @@ class DatePicker extends PureComponent {
     renderListDay() {
         var list = [];
         for (var i=0;i<Day.length;i++) {
-          list.push(<Picker.Item color={'#fff'} label={Day[i]} value={Day[i]} key={i} />);
+          list.push(<Picker.Item color={Styles.pickerItem} label={Day[i]} value={Day[i]} key={i} />);
         }
     
         return list;
@@ -49,7 +50,7 @@ class DatePicker extends PureComponent {
         var list = [];
     
         for (var i=0;i<25;i++) {
-          list.push(<Picker.Item color={'#fff'} label={i} value={i} key={i} />);
+          list.push(<Picker.Item color={Styles.pickerItem} label={i} value={i} key={i} />);
         }
     
         return list;
@@ -59,7 +60,7 @@ class DatePicker extends PureComponent {
         var list = [];
     
         for (var i=0;i<4;i++) {
-          list.push(<Picker.Item color={'#fff'} label={i * 15} value={i * 15} key={i} />);
+          list.push(<Picker.Item color={Styles.pickerItem} label={i * 15} value={i * 15} key={i} />);
         }
     
         return list;
@@ -99,12 +100,19 @@ class DatePicker extends PureComponent {
         });
         // Execute la function _onRefresh dans le parent Profil
         this.props._onRefresh();
-        // console.log('existe t il', this.props.thisSport.thisProfil);
     }
 
     render() {
+
+        iconSelect = (data) => {
+            let icon = '';
+            Platform.OS === 'ios' ? icon = 'ios' + data : icon = 'md' + data
+            return icon; 
+
+        }
+
         return (
-            <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={Styles.container}>
 
                 <Toast
                     ref="errors"
@@ -114,7 +122,7 @@ class DatePicker extends PureComponent {
                     fadeInDuration={750}
                     fadeOutDuration={1000}
                     opacity={0.8}
-                    textStyle={{color:'white', textAlign: 'center'}}
+                    textStyle={Styles.txtToast}
                 />
                 <Toast
                         ref="addSport"
@@ -124,76 +132,76 @@ class DatePicker extends PureComponent {
                         fadeInDuration={750}
                         fadeOutDuration={1000}
                         opacity={0.8}
-                        textStyle={{color:'white', textAlign: 'center'}}
+                        textStyle={Styles.txtToast}
                 />
                 <Icons name={'plus-circle-outline'} size={50} color={'#fff'} onPress={ () => {this.refs.modal1.open(); this.setState({errors: {}})} } />
 
-                <Modal style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#241332', padding: 3, display: 'flex', flexDirection: 'row' }} position={"top"} ref={"modal1"} swipeArea={20}>
-                    <View style={{display: 'flex', flexDirection: 'column', width:'50%'}}>
-                        <View style={{ marginTop: 10, display: 'flex', flexDirection: 'row', width: '100%', borderBottomColor: 'grey', opacity: 0.3, borderBottomWidth: 0.5 }}>
-                            <Text style={{width: '100%', textAlign: 'center', color: '#fff',fontSize: 20, fontWeight: 'bold', }} >SPORT</Text>
+                <Modal style={Styles.containerModal} position={"top"} ref={"modal1"} swipeArea={20}>
+                    <View style={Styles.viewModal}>
+                        <View style={Styles.viewTitle}>
+                            <Text style={Styles.txtTitle} >SPORT</Text>
                         </View>
-                        <View style={{ display: 'flex', flexDirection: 'row', marginVertical: 10, alignItems: 'center', justifyContent: 'center' }} >
-                            <Picker style={{ width: width * 0.5,  }} selectedValue={this.state.sport} onValueChange={(itemValue, itemIndex) => this.setState({sport: itemValue})} >
+                        <View style={Styles.viewPicker} >
+                            <Picker style={{ width: width * 0.5 }} selectedValue={this.state.sport} onValueChange={(itemValue, itemIndex) => this.setState({sport: itemValue})} >
                                 {this.renderList()}
                             </Picker>
                         </View>
                     </View>
-                    <View style={{width: '25%', height: '30%', position: 'absolute', justifyContent: 'center', right: 0, alignItems: 'center'}} >
-                        <Icon name={'ios-arrow-forward'} color={'#fff'} size={40} onPress={() => {this.refs.modal2.open(); this.refs.modal1.close()}} />
+                    <View style={Styles.viewArrowForward} >
+                        <Icon name={iconSelect('-arrow-forward')} color={'#fff'} size={40} onPress={() => {this.refs.modal2.open(); this.refs.modal1.close()}} />
                     </View>
                 </Modal>
             
-                <Modal style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#241332', padding: 3, display: 'flex', flexDirection: 'row' }} position={"top"} ref={"modal2"} swipeArea={20}>
-                    <View style={{ width: '25%', height: '30%', position: 'absolute', justifyContent: 'center', left: 0, alignItems: 'center'}} >                
-                        <Icon name={'ios-arrow-back'} color={'#fff'} size={40} onPress={() => {this.refs.modal1.open(); this.refs.modal2.close()}} />                
+                <Modal style={Styles.containerModal} position={"top"} ref={"modal2"} swipeArea={20}>
+                    <View style={Styles.viewArrowBack} >                
+                        <Icon name={iconSelect('-arrow-back')} color={'#fff'} size={40} onPress={() => {this.refs.modal1.open(); this.refs.modal2.close()}} />                
                     </View>
-                    <View style={{display: 'flex', flexDirection: 'column', width:'50%'}}>
-                        <View style={{ marginTop: 10, display: 'flex', flexDirection: 'row', width: '100%', borderBottomColor: 'grey', opacity: 0.3, borderBottomWidth: 0.5 }}>
-                            <Text style={{width: '100%', textAlign: 'center', color: '#fff',fontSize: 20, fontWeight: 'bold', }} >DAY</Text>
+                    <View style={Styles.viewModal}>
+                        <View style={Styles.viewTitle}>
+                            <Text style={Styles.txtTitle} >DAY</Text>
                         </View>
-                        <View style={{ display: 'flex', flexDirection: 'row', marginVertical: 10, alignItems: 'center', justifyContent: 'center' }} >
-                            <Picker style={{ width: width * 0.5,  }} selectedValue={this.state.day} onValueChange={(itemValue, itemIndex) => this.setState({day: itemValue})} >
+                        <View style={Styles.viewPicker} >
+                            <Picker style={{ width: width * 0.5 }} selectedValue={this.state.day} onValueChange={(itemValue, itemIndex) => this.setState({day: itemValue})} >
                                 {this.renderListDay()}
                             </Picker>
                         </View>
                     </View>
-                    <View style={{width: '25%', height: '30%', position: 'absolute', justifyContent: 'center', right: 0, alignItems: 'center'}} >
-                        <Icon name={'ios-arrow-forward'} color={'#fff'} size={40} onPress={() => {this.refs.modal3.open(); this.refs.modal2.close()}} />
+                    <View style={Styles.viewArrowForward} >
+                        <Icon name={iconSelect('-arrow-forward')} color={'#fff'} size={40} onPress={() => {this.refs.modal3.open(); this.refs.modal2.close()}} />
                     </View>
                 </Modal>
 
-                <Modal style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#241332', padding: 3, display: 'flex', flexDirection: 'row' }} position={"top"} ref={"modal3"} swipeArea={20}>
-                    <View style={{ width: '25%', height: '30%', position: 'absolute', justifyContent: 'center', left: 0, alignItems: 'center'}} >
-                        <Icon name={'ios-arrow-back'} color={'#fff'} size={40} onPress={() => {this.refs.modal2.open(); this.refs.modal3.close()}} />                
+                <Modal style={Styles.containerModal} position={"top"} ref={"modal3"} swipeArea={20}>
+                    <View style={Styles.viewArrowBack} >
+                        <Icon name={iconSelect('-arrow-back')} color={'#fff'} size={40} onPress={() => {this.refs.modal2.open(); this.refs.modal3.close()}} />                
                     </View>
-                    <View style={{display: 'flex', flexDirection: 'column', width:'50%'}}>
-                        <View style={{ marginTop: 10, display: 'flex', flexDirection: 'row', width: '100%', borderBottomColor: 'grey', opacity: 0.3, borderBottomWidth: 0.5 }}>
-                            <Text style={{width: '100%', textAlign: 'center', color: '#fff',fontSize: 20, fontWeight: 'bold', }} >START TIME</Text>
+                    <View style={Styles.viewModal}>
+                        <View style={Styles.viewTitle}>
+                            <Text style={Styles.txtTitle} >START TIME</Text>
                         </View>
-                        <View style={{ display: 'flex', flexDirection: 'row', marginVertical: 10, alignItems: 'center', justifyContent: 'center' }} >
-                            <Picker style={{ width: width * 0.25,  }} selectedValue={this.state.startH} onValueChange={(itemValue, itemIndex) => this.setState({startH: itemValue})} >
+                        <View style={Styles.viewPicker} >
+                            <Picker style={{ width: width * 0.25 }} selectedValue={this.state.startH} onValueChange={(itemValue, itemIndex) => this.setState({startH: itemValue})} >
                                 {this.renderListHours()}
                             </Picker>
-                            <Picker style={{ width: width * 0.25,  }} selectedValue={this.state.startM} onValueChange={(itemValue, itemIndex) => this.setState({startM: itemValue})} >
+                            <Picker style={{ width: width * 0.25 }} selectedValue={this.state.startM} onValueChange={(itemValue, itemIndex) => this.setState({startM: itemValue})} >
                                 {this.renderListMinutes()}
                             </Picker>
                         </View>
                     </View>
-                    <View style={{width: '25%', height: '30%', position: 'absolute', justifyContent: 'center', right: 0, alignItems: 'center'}} >
-                        <Icon name={'ios-arrow-forward'} color={'#fff'} size={40} onPress={() => {this.refs.modal4.open(); this.refs.modal3.close()}} />
+                    <View style={Styles.viewArrowForward} >
+                        <Icon name={iconSelect('-arrow-forward')} color={'#fff'} size={40} onPress={() => {this.refs.modal4.open(); this.refs.modal3.close()}} />
                     </View>
                 </Modal>
 
-                <Modal style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#241332', padding: 3, display: 'flex', flexDirection: 'row' }} position={"top"} ref={"modal4"} swipeArea={20}>
-                    <View style={{ width: '25%', height: '30%', position: 'absolute', justifyContent: 'center', left: 0, alignItems: 'center'}} >                
-                        <Icon name={'ios-arrow-back'} color={'#fff'} size={40} onPress={() => {this.refs.modal3.open(); this.refs.modal4.close()}} />                
+                <Modal style={Styles.containerModal} position={"top"} ref={"modal4"} swipeArea={20}>
+                    <View style={Styles.viewArrowBack} >                
+                        <Icon name={iconSelect('-arrow-back')} color={'#fff'} size={40} onPress={() => {this.refs.modal3.open(); this.refs.modal4.close()}} />                
                     </View>
-                    <View style={{display: 'flex', flexDirection: 'column', width:'50%'}}>
-                        <View style={{ marginTop: 10, display: 'flex', flexDirection: 'row', width: '100%', borderBottomColor: 'grey', opacity: 0.3, borderBottomWidth: 0.5 }}>
-                            <Text style={{width: '100%', textAlign: 'center', color: '#fff',fontSize: 20, fontWeight: 'bold', }} >STOP TIME</Text>
+                    <View style={Styles.viewModal}>
+                        <View style={Styles.viewTitle}>
+                            <Text style={Styles.txtTitle} >STOP TIME</Text>
                         </View>
-                        <View style={{ display: 'flex', flexDirection: 'row', marginVertical: 10, alignItems: 'center', justifyContent: 'center' }} >
+                        <View style={Styles.viewPicker} >
                             <Picker style={{ width: width * 0.25,  }} selectedValue={this.state.stopH} onValueChange={(itemValue, itemIndex) => this.setState({stopH: itemValue})} >
                                 {this.renderListHours()}
                             </Picker>
@@ -202,9 +210,9 @@ class DatePicker extends PureComponent {
                             </Picker>
                         </View>
                     </View>
-                    <View style={{width: '25%', height: '30%', position: 'absolute', justifyContent: 'center', right: 0, alignItems: 'center'}} >
-                        <View style={{borderColor: '#fff', borderWidth: 0.5, borderRadius: 90, padding: 10 }}>
-                            <Text style={{color: '#fff', fontSize: 20 }} onPress={() => {this.handleSubmit(); this.refs.modal4.close()}} > OK </Text>
+                    <View style={Styles.viewArrowForward} >
+                        <View style={Styles.viewConfirm}>
+                            <Text style={Styles.txtConfirm} onPress={() => {this.handleSubmit(); this.refs.modal4.close()}} > OK </Text>
                         </View>
                     </View>
                 </Modal>

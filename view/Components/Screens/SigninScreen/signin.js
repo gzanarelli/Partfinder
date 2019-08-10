@@ -94,7 +94,9 @@ class Signin extends Component {
                     <View style={{display: 'flex', flexDirection: 'row'}}>
                         <TextField error={errors.password} secureTextEntry={hide} label='Password' onChangeText={(password) => this.setState({password})} value={password} containerStyle={{width: '100%'}} />
                         <Icon onPress={ showPassword } reverse name={
-                            Platform.os === 'ios' ? this.state.hide ? 'ios-eye' : 'ios-eye-off' : this.state.hide ? 'md-eye' : 'md-eye-off'
+                            Platform.os === 'ios' ? 
+                                this.state.hide ? 'ios-eye' : 'ios-eye-off' :
+                                this.state.hide ? 'md-eye' : 'md-eye-off'
                             }
                             style={ typeof errors.password === 'undefined' ? Styles.icon : Styles.iconError} />
                     </View>

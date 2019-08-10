@@ -1,9 +1,12 @@
 import {
     StyleSheet,
-    Dimensions
+    Dimensions,
+    Platform,
+    StatusBar
 } from 'react-native';
 let { height, width } = Dimensions.get('window');
-
+if(Platform.OS === 'android')
+    height -= StatusBar.currentHeight;
 export default StyleSheet.create({
     title: {
         textAlign: 'center',
