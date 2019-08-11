@@ -84,14 +84,14 @@ class Signup extends Component {
                     <View style={{display: 'flex', flexDirection: 'row'}}>
                         <TextField error={errors.password} secureTextEntry={this.state.hide} label='Password' onChangeText={(password) => this.setState({password})} value={password} containerStyle={{width: '100%', }} />
                         <Icon onPress={ showPassword } reverse name={
-                            Platform.os === 'ios' ? this.state.hide ? 'ios-eye' : 'ios-eye-off' : this.state.hide ? 'md-eye' : 'md-eye-off'
+                            Platform.OS === 'ios' ? this.state.hide ? 'ios-eye' : 'ios-eye-off' : this.state.hide ? 'md-eye' : 'md-eye-off'
                         } style={ typeof errors.password === 'undefined' ? Styles.icon : Styles.iconError} />
                     </View>
                     
                     <View style={{display: 'flex', flexDirection: 'row'}}>
                         <TextField error={errors.confirmPassword} secureTextEntry={this.state.hide2} label='Confirm Password' onChangeText={(confirmPassword) => this.setState({confirmPassword})} value={confirmPassword} containerStyle={{width: '100%'}} />
                         <Icon onPress={ showPassword2 } reverse name={
-                            Platform.os === 'ios' ? this.state.hide2 ? 'ios-eye' : 'ios-eye-off' : this.state.hide2 ? 'md-eye' : 'md-eye-off'
+                            Platform.OS === 'ios' ? this.state.hide2 ? 'ios-eye' : 'ios-eye-off' : this.state.hide2 ? 'md-eye' : 'md-eye-off'
                         } style={ typeof errors.confirmPassword === 'undefined' ? Styles.icon : Styles.iconError} />
                     </View>    
                     

@@ -3,9 +3,10 @@ import Plateform, { StatusBar } from 'react-native';
 import AppContainer from './Components/Navigation/navigation';
 import { SafeAreaView } from 'react-navigation';
 import userToken from './Components/Reducer/token.reducer';
+import partnerID from './Components/Reducer/partnerID.reducer';
 import {Provider} from 'react-redux';
 import {createStore, combineReducers}  from 'redux';
-const store = createStore(combineReducers({ userToken }));
+const store = createStore(combineReducers({ userToken, partnerID }));
 
 export default class App extends Component {
   render() {

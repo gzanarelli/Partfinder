@@ -50,13 +50,13 @@ class Signin extends Component {
                 email: this.state.email,
                 password: this.state.password
             };
-            
             fetch(`http://${ipAddress}:3000/users/login`, {
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify(data)
            }).then(res => res.json())
            .then( res => {
+            //    console.log(res);
                 if (res.result) {
                     this.storeToken(res.token);
                     this.props.userToken(res.token);
@@ -94,7 +94,7 @@ class Signin extends Component {
                     <View style={{display: 'flex', flexDirection: 'row'}}>
                         <TextField error={errors.password} secureTextEntry={hide} label='Password' onChangeText={(password) => this.setState({password})} value={password} containerStyle={{width: '100%'}} />
                         <Icon onPress={ showPassword } reverse name={
-                            Platform.os === 'ios' ? 
+                            Platform.OS === 'ios' ? 
                                 this.state.hide ? 'ios-eye' : 'ios-eye-off' :
                                 this.state.hide ? 'md-eye' : 'md-eye-off'
                             }

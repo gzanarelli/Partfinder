@@ -18,6 +18,16 @@ router.post('/', (req, res) => {
 });
 
 
+// Page profil partner
+
+router.post('/partner', (req, res) => {
+    console.log(req.body);
+    userModel.findById(req.body.partnerID, (err, data) => {
+        if (err) console.error(err);
+        res.status(200).send({user: data});
+    })
+})
+
 
 // Permet de rajouter un sport avec une dispo.
 

@@ -31,7 +31,7 @@ class DatePicker extends PureComponent {
     renderList() {
         var list = [];
         for (var i=0;i<Sport.length;i++) {
-          list.push(<Picker.Item label={Sport[i]} value={Sport[i]} color={Styles.pickerItem} key={i} />);
+          list.push(<Picker.Item label={Sport[i]} value={Sport[i]} color={Platform.OS === 'ios' ? '#fff' : '#000'} key={i} />);
         }
         return list
     }
@@ -40,7 +40,7 @@ class DatePicker extends PureComponent {
     renderListDay() {
         var list = [];
         for (var i=0;i<Day.length;i++) {
-          list.push(<Picker.Item color={Styles.pickerItem} label={Day[i]} value={Day[i]} key={i} />);
+          list.push(<Picker.Item color={Platform.OS === 'ios' ? '#fff' : '#000'} label={Day[i]} value={Day[i]} key={i} />);
         }
     
         return list;
@@ -50,7 +50,7 @@ class DatePicker extends PureComponent {
         var list = [];
     
         for (var i=0;i<25;i++) {
-          list.push(<Picker.Item color={Styles.pickerItem} label={i} value={i} key={i} />);
+          list.push(<Picker.Item color={Platform.OS === 'ios' ? '#fff' : '#000'} label={i} value={i} key={i} />);
         }
     
         return list;
@@ -60,7 +60,7 @@ class DatePicker extends PureComponent {
         var list = [];
     
         for (var i=0;i<4;i++) {
-          list.push(<Picker.Item color={Styles.pickerItem} label={i * 15} value={i * 15} key={i} />);
+          list.push(<Picker.Item color={Platform.OS === 'ios' ? '#fff' : '#000'} label={i * 15} value={i * 15} key={i} />);
         }
     
         return list;

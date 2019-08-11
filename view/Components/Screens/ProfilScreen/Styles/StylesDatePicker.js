@@ -76,7 +76,4 @@ export default StyleSheet.create({
         color: '#fff',
         fontSize: 20
     },
-    pickerItem: {
-        color: Platform.OS === 'ios' ? '#fff' : '#000'
-    }
 })

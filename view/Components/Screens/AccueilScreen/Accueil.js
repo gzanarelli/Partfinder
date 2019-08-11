@@ -4,6 +4,7 @@ import ipAddress from '../../../config';
 import { ListItem, Avatar } from 'react-native-elements';
 import {AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Styles from './Styles';
 
@@ -42,6 +43,12 @@ class Accueil extends PureComponent {
     this.getToken();
   }
     
+  viewProfil = (data) => {
+    console.log(data);
+    this.props.partnerID(data)
+    this.props.navigation.navigate('PartnerProfil');
+  }
+
   render() {
 
     // FUNCTION UpperCase the first letter
@@ -97,7 +104,7 @@ class Accueil extends PureComponent {
                   </Text>
                 </View>
                 <View style={{right: 15}}>
-                  <Icon onPress={() => this.props.navigation.navigate('PartnerProfil')} name={Platform.os === 'ios' ? 'ios-arrow-round-forward' : 'md-arrow-round-forward'} size={25} color={ i % 2 === 0 ? '#000' : '#fff'} />
+                  <Icon onPress={() => this.viewProfil(user._id)} name={Platform.os === 'ios' ? 'ios-arrow-round-forward' : 'md-arrow-round-forward'} size={25} color={ i % 2 === 0 ? '#000' : '#fff'} />
                 </View>
               </View>
             }
@@ -115,4 +122,18 @@ class Accueil extends PureComponent {
   }
 }
 
-export default Accueil;
+function mapDispatchToProps(dispatch) {
+  return {
+      partnerID: function(iD) {
+          dispatch({
+              type: 'addID',
+              iD: iD
+          })
+      }
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Accueil);
