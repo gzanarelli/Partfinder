@@ -1,9 +1,46 @@
 import React, { Component } from 'react';
-import { Dimensions, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
+import { Dimensions, Text, View, ImageBackground, TouchableOpacity,AsyncStorage } from 'react-native';
 import Styles from './Styles';
+import { connect } from 'react-redux';
+const ACCESS_TOKEN = 'access_token';
+
 // let {height, width} = Dimensions.get('window');
 
 class Home extends Component {
+
+    // handleSubmitSignin = () => {
+    //     if (AsyncStorage.getItem('User'))
+    //     this.props.navigation.navigate('Signin')
+    // }
+
+    async storeToken(accessToken, data) {
+        try{
+            await AsyncStorage.setItem(ACCESS_TOKEN, accessToken);
+        } catch(error) {
+            console.error(error);
+        }
+    }
+
+    componentDidMount(){
+        AsyncStorage.getItem('User', (err, data)=>{
+            var userJSON = JSON.parse(data);
+            if (userJSON) {
+                fetch(`http://${ipAddress}:3000/users/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify(userJSON)
+               }).then(res => res.json())
+               .then( res => {
+                    if (res.result) {
+                        this.storeToken(res.token);
+                        this.props.userToken(res.token);
+                        this.props.navigation.navigate('Accueil');
+                    }
+                }
+            )
+        }
+    })
+}
 
     render() {
 
@@ -49,4 +86,18 @@ class Home extends Component {
     }
 }
 
-export default Home;
+function mapDispatchToProps(dispatch) {
+    return {
+        userToken: function(token) {
+            dispatch({
+                type: 'addToken',
+                token: token
+            })
+        }
+    }
+}
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(Home);

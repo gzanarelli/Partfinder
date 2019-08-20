@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, ScrollView, Dimensions, StyleSheet, Platform, Picker, Alert, RefreshControl, TouchableHighlight } from 'react-native';
+import { Text, View, ScrollView, Dimensions, AsyncStorage, RefreshControl, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
 import { Avatar } from 'react-native-elements';
 import ipAddress from '../../../config';
@@ -87,10 +87,14 @@ class Profil extends Component {
         return (data[0].toUpperCase() + data.slice(1).toLowerCase());
     };
 
+
+    handleDeconnect = () => {
+        AsyncStorage.removeItem('User');
+        this.props.navigation.navigate('Home');
+    }
+
     render() {
-
         // Stylisme de l'affichage: First Letter Up then LowerCase
-
 
         return (
             <View>
@@ -126,7 +130,7 @@ class Profil extends Component {
                             <Infos
                                 userProfilFromParent={ this.state.userProfil }
                                 editProfil={ () => this.props.navigation.navigate('EditProfil') }
-                                deconnexion={ () => this.props.navigation.navigate('Home') }
+                                deconnexion={ () => this.handleDeconnect() }
                             />
                         </View>
                         

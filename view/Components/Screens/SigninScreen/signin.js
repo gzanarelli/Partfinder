@@ -20,9 +20,12 @@ class Signin extends Component {
         };
     }
 
-    async storeToken(accessToken) {
+    async storeToken(accessToken, data) {
+        console.log(data);
         try{
             await AsyncStorage.setItem(ACCESS_TOKEN, accessToken);
+            await AsyncStorage.setItem('User', JSON.stringify(data));
+
             this.getToken();
         } catch(error) {
             console.error(error);
@@ -58,7 +61,7 @@ class Signin extends Component {
            .then( res => {
             //    console.log(res);
                 if (res.result) {
-                    this.storeToken(res.token);
+                    this.storeToken(res.token, data);
                     this.props.userToken(res.token);
                     this.props.navigation.navigate('Accueil');
                 }
