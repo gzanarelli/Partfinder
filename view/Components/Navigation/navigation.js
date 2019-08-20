@@ -6,8 +6,9 @@ import Signup from '../Screens/SignupScreen/signup';
 import Home from '../Screens/HomeScreen/Home';
 import Accueil from '../Screens/AccueilScreen/Accueil';
 import Profil from '../Screens/ProfilScreen/Profil';
-import Search from '../Screens/search';
-import Message from '../Screens/message';
+import Search from '../Screens/SearchScreen/search';
+import Message from '../Screens/Message/message';
+import Conversation from '../Screens/Message/Conversation';
 import Statistic from '../Screens/statistic';
 import EditProfil from'../Screens/EditProfilScreen/EditProfil';
 import PartnerProfil from '../Screens/PartnerProfilScreen/PartnerProfil';
@@ -45,6 +46,42 @@ const AccueilContainer = createStackNavigator({
     screen: PartnerProfil,
     navigationOptions: {
       title: 'Profil Partner'
+    }
+  }
+})
+
+
+// Stack Search & Profil Partner
+const SearchContainer = createStackNavigator({
+  Search: {
+    screen: Search,
+    navigationOptions: {
+      header: null,
+      headerBackTitle: 'Search',
+    },
+  },
+  PartnerProfil: {
+    screen: PartnerProfil,
+    navigationOptions: {
+      title: 'Profil Partner'
+    }
+  }
+})
+
+
+// Stack Messagerie & Conversation
+const MessageContainer = createStackNavigator({
+  Message: {
+    screen: Message,
+    navigationOptions: {
+      header: null,
+      headerBackTitle: 'Message',
+    },
+  },
+  Conversation: {
+    screen: Conversation,
+    navigationOptions: {
+      title: 'Conversation'
     }
   }
 })
@@ -91,9 +128,10 @@ const TopContainer = createMaterialTopTabNavigator({
       )
     }
   },
-  Search: {
-    screen: Search,
+  SearchContainer: {
+    screen: SearchContainer,
     navigationOptions: {
+      title: 'SEARCH',
       tabBarIcon: ({tintColor}) => (
         <Avatar
           rounded
@@ -105,9 +143,10 @@ const TopContainer = createMaterialTopTabNavigator({
       )
     }
   },
-  Message: {
-    screen: Message,
+  MessageContainer: {
+    screen: MessageContainer,
     navigationOptions: {
+      title: 'MESSAGE',
       tabBarIcon: ({tintColor}) => (
       <Avatar
         rounded

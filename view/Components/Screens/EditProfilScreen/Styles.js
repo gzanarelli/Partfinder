@@ -38,7 +38,8 @@ export default StyleSheet.create({
         marginTop: 5,
         paddingBottom: 30,
         backgroundColor: '#fff',
-        borderRadius: 45
+        borderRadius: 45,
+        overflow: 'hidden'
     },
     btnContinue: {
         width: width * 0.8,

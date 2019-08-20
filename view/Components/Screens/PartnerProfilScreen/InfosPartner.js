@@ -20,6 +20,9 @@ export default class Infos extends Component {
                 />
                 <Text style={Styles.txtName} >
                     {this.props.userProfilFromParent.username}
+                    <Icons reverse name={'wechat'} size={24} style={{color: '#4790ED'}}
+                        onPress={ () => this.props.conversation() }
+                    /> 
                 </Text>
                 <Text style={Styles.txtCity} >
                     {

@@ -1,1 +1,1 @@
-export default ipAddress = '172.20.10.3';
+export default ipAddress = '10.69.220.37';

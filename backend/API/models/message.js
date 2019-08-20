@@ -11,6 +11,7 @@ let messageSchema = new Schema({
 });
 
 let conversationSchema = new Schema({
+    users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
     message: [messageSchema],
 });
 

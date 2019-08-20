@@ -44,7 +44,6 @@ class Accueil extends PureComponent {
   }
     
   viewProfil = (data) => {
-    console.log(data);
     this.props.partnerID(data)
     this.props.navigation.navigate('PartnerProfil');
   }

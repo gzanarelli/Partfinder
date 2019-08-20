@@ -30,7 +30,6 @@ export class PartnerProfil extends Component {
         )
         .then(res => res.json())
         .then(data => {
-            console.log('userData: ', data.user.sport);
             this.setState({userProfil: data.user, sportList: data.user.sport });
         })
         .catch(err => console.log(err))
@@ -43,6 +42,19 @@ export class PartnerProfil extends Component {
         return (data[0].toUpperCase() + data.slice(1).toLowerCase());
     };
 
+    addConversation = async () => {
+        await fetch(`http://${ipAddress}:3000/message/conversation-add`, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({partnerID: this.props.ID, token: this.props.token})   
+        }).then(res => res.json())
+        .then(data => {
+            if (data.result === true)
+                this.refs.toast.show(data.message);
+            console.log(data);
+        })
+    }
+
     render() {
 
         fctLetter = () => {
@@ -53,7 +65,7 @@ export class PartnerProfil extends Component {
             <ScrollView style={Styles.scrollView}>
                 <Toast
                     ref="toast"
-                    style={{backgroundColor:'red', width: width * 0.6}}
+                    style={{backgroundColor:'green', width: width * 0.6}}
                     position='center'
                     positionValue={200}
                     fadeInDuration={750}
@@ -65,6 +77,7 @@ export class PartnerProfil extends Component {
                 <View style={{backgroundColor: '#4790ED'}}>
                     <Infos
                         userProfilFromParent={ this.state.userProfil }
+                        conversation={ this.addConversation }
                     />
                 </View>
                 

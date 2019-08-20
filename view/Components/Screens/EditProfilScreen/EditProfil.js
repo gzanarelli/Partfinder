@@ -75,9 +75,8 @@ export class EditProfil extends Component {
 
                 <View style={Styles.backBlue}></View>
 
-                <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={offset}>
+                <KeyboardAvoidingView behavior="position" style={Styles.form} keyboardVerticalOffset={offset} >
                 
-                <View style={Styles.form}>
 
                     <TextField
                         onFocus={() => this.setState({ offset: 0 })}
@@ -140,8 +139,6 @@ export class EditProfil extends Component {
                     { message !== '' && (
                     <Text style={Styles.successMessage}>{message}</Text>
                     )}
-
-                </View>
                 </KeyboardAvoidingView>
                 <TouchableOpacity onPress={handleSubmit} style={Styles.btnContinue}><Text style={Styles.text}>CONTINUE</Text></TouchableOpacity>
             </View>
