@@ -2,6 +2,7 @@ const emailRegex = require('email-regex');
 const isEmpty = require('../isEmpty');
 
 // Validator Sign UP
+
 const ValidSignup = (req, res, next) => {
     let errors = {};
     let regexPwd = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/;

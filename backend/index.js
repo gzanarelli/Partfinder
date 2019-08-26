@@ -4,22 +4,11 @@ let dotenv = require('dotenv').config();
 let userRouter = require('./API/routes/users');
 let profilRouter = require('./API/routes/profil');
 let searchRouter = require('./API/routes/search');
-let friendRouter = require('./API/routes/friends');
 let messageRouter = require('./API/routes/message');
-let session = require('express-session');
 var cors = require('cors');
-var server = require('http').Server(app);
-const io = require('socket.io')(server);  
+const server = require('http').Server(app);
 const conversationModel = require('./API/models/message');
-
-// io.on('connection', (socket) => {
-//     socket.on('chatMessage', (data) => {
-//         let message = {
-//             message: data.msg,
-//         }
-//         socket.broadcast.emit('chatMessage', data.msg);
-//     })
-// })
+const io = require('socket.io')(server);  
 
 io.on('connection', (socket) => {
     socket.broadcast.emit('user Connected');
@@ -43,13 +32,8 @@ io.on('connection', (socket) => {
     })
 })
 
-app.use(cors())
-app.use(session({
-    secret: process.env.SECRET_SESSION,
-    resave: false,
-    saveUninitialized: false,
-}));
 
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -58,7 +42,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/users', userRouter);
 app.use('/profil', profilRouter);
 app.use('/search', searchRouter);
-app.use('/friend', friendRouter);
 app.use('/message', messageRouter);
 
 

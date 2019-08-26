@@ -159,21 +159,5 @@ router.post('/edit', ValidProfil, (req, res) => {
     })
 });
 
-// router.post('/edit/password', validPassword, (req, res) => {
-//     userModel.findById(req.session.user._id, (err, data) => {
-//         if (err) console.error(err);
-//         let passDecrypt = CryptoJS.AES.decrypt(data.password.toString(), process.env.ENCRYPT).toString(CryptoJS.enc.Utf8);        
-//         if (passDecrypt !== req.body.oldPassword)
-//             res.status(400).send({ oldPassword: 'Old password not match' });
-//         passDecrypt = null;
-//         let newPassword = CryptoJS.AES.encrypt(`${req.body.password}`, process.env.ENCRYPT).toString();
-//         userModel.updateMany({_id: req.session.user._id}, {$set: {password: newPassword, modify: Date.now()}}, (err, data) => {
-//             if (err) console.error(err);
-//             console.log(data);
-//             res.status(200).send({ message: 'Password has been changed' });
-//         })
-//     })
-// });
-
 
 module.exports = router;

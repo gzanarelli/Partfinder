@@ -3,7 +3,6 @@ const router = express.Router();
 const db = require('../models/db');
 const conversationModel = require('../models/message');
 const jwt = require('jsonwebtoken');
-// const userModel = require('../models/user');
 
 router.post('/', (req, res) => {
 
@@ -45,12 +44,5 @@ router.post('/conversation-add', (req, res) => {
     })
 })
 
-router.post('/:id/message-add', (req, res) => {
-
-})
-
-router.get('/delete-conversation/:id', (req, res) => {
-    //delete la conversation select. 
-})
 
 module.exports = router;
